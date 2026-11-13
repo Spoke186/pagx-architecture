@@ -1,0 +1,221 @@
+---
+import { Image } from 'astro:assets'
+import Layout from '../layouts/Layout.astro'
+import { en as t } from '../i18n/en'
+
+import corner from '../assets/photos/corner.webp'
+import terrace from '../assets/photos/terrace.webp'
+import matConcrete from '../assets/photos/mat-concrete.webp'
+import matTimber from '../assets/photos/mat-timber.webp'
+import matSoffit from '../assets/photos/mat-soffit.webp'
+import matPool from '../assets/photos/mat-pool.webp'
+import andes from '../assets/photos/andes.webp'
+import dune from '../assets/photos/dune.webp'
+import living from '../assets/photos/living.webp'
+import kitchen from '../assets/photos/kitchen.webp'
+import eave from '../assets/photos/eave.webp'
+
+const B = import.meta.env.BASE_URL
+const mats = [matConcrete, matTimber, matSoffit, matPool]
+const work = [andes, dune, living, kitchen, eave]
+const arrow = '<svg viewBox="0 0 20 12" aria-hidden="true"><path d="M0 6h18M13 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>'
+const waUrl = `https://wa.me/${t.studio.wa}?text=${encodeURIComponent(t.contact.message)}`
+---
+
+<Layout title={t.meta.title} description={t.meta.description} lang={t.lang}>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header id="hdr" class="hdr">
+    <a class="mark" href="#top" aria-label="PAGX Architecture, back to top">
+      <span class="mark-word">PAGX</span>
+      <span class="mark-sub">Architecture</span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#work">{t.nav.work}</a>
+      <a href="#build">{t.nav.build}</a>
+      <a href="#materials">{t.nav.materials}</a>
+      <a href="#process">{t.nav.process}</a>
+    </nav>
+    <a class="btn btn-line hdr-cta" href="#contact">{t.nav.cta}</a>
+    <button id="menuBtn" class="menu-btn" aria-expanded="false" aria-controls="mnav">{t.nav.menu}</button>
+  </header>
+
+  <div id="mnav" class="mnav" hidden role="dialog" aria-modal="true" aria-label={t.nav.menu}>
+    <button id="menuClose" class="menu-btn">{t.nav.close}</button>
+    <a href="#work">{t.nav.work}</a>
+    <a href="#build">{t.nav.build}</a>
+    <a href="#materials">{t.nav.materials}</a>
+    <a href="#process">{t.nav.process}</a>
+    <a href="#contact">{t.nav.contact}</a>
+    <p class="mnav-foot">{t.footer.tag}</p>
+  </div>
+
+  <main id="main">
+    <!-- 01 · Hero: Casa Niebla at blue hour, a locked-off loop where only the mist moves (#74) -->
+    <section id="top" class="hero">
+      <h1 class="sr-only">{t.hero.title}</h1>
+      <div class="hero-stage" aria-hidden="true">
+        <picture class="h-layer h-bg">
+          <source media="(max-aspect-ratio: 1/1)" srcset={`${B}media/hero-m.webp`} />
+          <img src={`${B}media/hero-d.webp`} alt="" fetchpriority="high" />
+        </picture>
+        <video class="h-layer h-vid" muted loop playsinline preload="none" data-d={`${B}media/hero-d.mp4`} data-m={`${B}media/hero-m.mp4`}></video>
+        <p class="h-word">{t.hero.word}</p>
+      </div>
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="hero-copy">
+        <p class="hero-body">{t.hero.body}</p>
+        <div class="hero-cta">
+          <a class="btn btn-light" href="#contact"><span>{t.hero.cta}</span><Fragment set:html={arrow} /></a>
+          <a class="link" href="#build">{t.hero.more}</a>
+        </div>
+      </div>
+      <p class="hero-cap">{t.hero.caption.map((l) => <span>{l}</span>)}</p>
+    </section>
+
+    <!-- 02 · Statement -->
+    <section class="statement">
+      <h2 class="display split">{t.statement.title.map((l) => <span>{l}</span>)}</h2>
+      <div class="st-side">
+        <p class="lead">{t.statement.body}</p>
+        <ul class="facts">{t.statement.facts.map((f) => <li><strong class="display">{f.n}</strong><span>{f.l}</span></li>)}</ul>
+      </div>
+    </section>
+
+    <!-- 03 · Dusk: the one scroll-scrubbed moment. The same house from grey afternoon to blue hour, lights coming on (#74) -->
+    <section id="build" class="build" aria-label={t.build.label}>
+      <div class="b-pin">
+        <canvas id="seq" class="seq" aria-hidden="true"></canvas>
+        <img class="seq-fallback" src={`${B}seq/d/f120.webp`} alt="Casa Niebla at blue hour, every light on" loading="lazy" />
+        <div class="b-shade" aria-hidden="true"></div>
+        <ol class="chapters">
+          {t.build.chapters.map((c, i) => (
+            <li class="chapter">
+              <span class="num">0{i + 1}</span>
+              <h2 class="display">{c.word}</h2>
+              <p>{c.body}</p>
+            </li>
+          ))}
+        </ol>
+        <ol class="b-steps" aria-hidden="true">{t.build.chapters.map((c) => <li>{c.word}</li>)}</ol>
+        <p class="b-note">{t.build.note}</p>
+      </div>
+    </section>
+
+    <!-- 04 · Materials: a list of four; on desktop the photo beside it follows the one you are on -->
+    <section id="materials" class="materials">
+      <div class="m-head">
+        <h2 class="display split">{t.materials.title.map((l) => <span>{l}</span>)}</h2>
+        <p class="lead">{t.materials.body}</p>
+      </div>
+      <div class="m-body">
+        <ol class="m-list">
+          {t.materials.items.map((m, i) => (
+            <li class:list={['m-item', i === 0 && 'on']} data-i={i}>
+              <span class="num">0{i + 1}</span>
+              <h3>{m.name}</h3>
+              <p>{m.body}</p>
+              <figure class="m-img"><Image src={mats[i]} alt={m.alt} widths={[500, 800]} sizes="90vw" /></figure>
+            </li>
+          ))}
+        </ol>
+        <div class="m-stage" aria-hidden="true">
+          {mats.map((src, i) => <Image class:list={['m-pic', i === 0 && 'on']} src={src} alt="" widths={[700, 1100, 1500]} sizes="40vw" />)}
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 · Work: Casa Niebla opens to full bleed, then two houses in alternating rows and three interiors -->
+    <section id="work" class="work">
+      <div class="w-head">
+        <h2 class="display split">{t.work.title}</h2>
+        <a class="btn btn-dark" href="#contact"><span>{t.work.cta}</span><Fragment set:html={arrow} /></a>
+      </div>
+      <figure class="w-hero">
+        <div class="w-hero-img"><Image src={corner} alt={t.work.featured.altA} widths={[900, 1600, 2400]} sizes="100vw" /></div>
+        <figcaption>
+          <h3 class="display">{t.work.featured.name}</h3>
+          <p class="meta">{t.work.featured.meta}</p>
+        </figcaption>
+      </figure>
+      <div class="w-pair">
+        <p class="w-body">{t.work.featured.body}</p>
+        <figure class="reveal"><Image src={terrace} alt={t.work.featured.altB} widths={[700, 1200, 1800]} sizes="(max-width: 900px) 100vw, 60vw" /></figure>
+      </div>
+      <ol class="projects">
+        {t.work.items.slice(0, 2).map((w, i) => (
+          <li class="proj">
+            <figure class="reveal"><Image src={work[i]} alt={w.alt} widths={[700, 1200, 1800]} sizes="(max-width: 900px) 100vw, 64vw" /></figure>
+            <div class="proj-copy">
+              <span class="num">0{i + 2}</span>
+              <h3 class="display">{w.name}</h3>
+              <p class="meta">{w.meta}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <ul class="details">
+        {t.work.items.slice(2).map((w, i) => (
+          <li>
+            <figure class="reveal"><Image src={work[i + 2]} alt={w.alt} widths={[500, 900, 1200]} sizes="(max-width: 900px) 85vw, 31vw" /></figure>
+            <p><span class="tile-name">{w.name}</span><span class="meta">{w.meta}</span></p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- 06 · Process -->
+    <section id="process" class="process">
+      <h2 class="display split">{t.process.title}</h2>
+      <ol class="steps">
+        {t.process.steps.map((s, i) => (
+          <li>
+            <span class="num">0{i + 1}</span>
+            <h3>{s.t}</h3>
+            <span class="dur">{s.d}</span>
+            <p>{s.body}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <!-- 07 · Contact: a short brief, sent as a WhatsApp message (concept only) -->
+    <section id="contact" class="contact">
+      <h2 class="display split">{t.contact.title.map((l) => <span>{l}</span>)}</h2>
+      <form id="brief" class="brief" data-wa={waUrl} onsubmit="return false">
+        {Object.entries(t.contact.fields).map(([k, f]) => (
+          <label class="sel">
+            <span class="lbl">{f.label}</span>
+            <select id={`f-${k}`} name={k}>{f.options.map((o) => <option>{o}</option>)}</select>
+          </label>
+        ))}
+        <a id="briefGo" class="btn btn-light brief-go" href={waUrl} target="_blank" rel="noopener"><span>{t.contact.send}</span><Fragment set:html={arrow} /></a>
+      </form>
+      <p class="brief-note">{t.contact.note}</p>
+    </section>
+  </main>
+
+  <!-- Footer: the forest at blue hour seen through the letters -->
+  <footer class="ftr">
+    <div class="ftr-row">
+      <p class="tag">{t.footer.tag}</p>
+      <ul>{t.footer.left.map((l) => <li>{l}</li>)}</ul>
+      <ul>
+        <li><a class="link" href="#work">{t.nav.work}</a></li>
+        <li><a class="link" href="#materials">{t.nav.materials}</a></li>
+        <li><a class="link" href="#process">{t.nav.process}</a></li>
+      </ul>
+      <ul class="right">
+        <li><a class="link" href={waUrl} target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a class="link" href="#top">{t.footer.top}</a></li>
+      </ul>
+    </div>
+    <p class="ftr-word" aria-hidden="true">PAGX</p>
+    <p class="credit">{t.footer.credit} <a class="link" href={t.studio.site} target="_blank" rel="noopener">{t.footer.studio}</a></p>
+  </footer>
+
+  <script>
+    import { init } from '../scripts/site'
+    init()
+  </script>
+</Layout>
